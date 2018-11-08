@@ -1,4 +1,4 @@
-package com.example.homework3;
+package info.goodline.cardbag;
 
 import org.junit.Test;
 

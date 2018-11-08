@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#EDEDED"
     android:orientation="vertical"
-    tools:context=".AddCard">
+    tools:context=".CardAddActivity">
 
 
     <android.support.v7.widget.Toolbar
@@ -46,7 +46,7 @@
             android:id="@+id/save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="addCard"
+            android:onClick="btSaveCard"
             android:layout_margin="16dp"
             android:background="#009788"
             android:text="Сохранить"

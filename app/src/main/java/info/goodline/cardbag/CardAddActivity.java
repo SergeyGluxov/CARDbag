@@ -1,14 +1,20 @@
-package com.example.homework3;
+package info.goodline.cardbag;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-public class AddCard extends AppCompatActivity {
+
+public class CardAddActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private Card card;
@@ -20,14 +26,10 @@ public class AddCard extends AppCompatActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Мои карты");
+        getSupportActionBar().setTitle("Добавить карту");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        card = new Card();
-        card.setName((EditText) findViewById(R.id.name));
-        card.setCategory((EditText) findViewById(R.id.category));
-        card.setDiscount((EditText) findViewById(R.id.discount));
     }
 
     @Override
@@ -41,14 +43,20 @@ public class AddCard extends AppCompatActivity {
         }
     }
 
-    public void addCard(View view) {
-        if (card == null) {
-            return;
-        }
+    public void btSaveCard(View view) {
 
-        Intent data = new Intent(this, CardList.class);
-        data.putExtra(Card.class.getSimpleName(), card);
-        setResult(RESULT_OK, data);
+        String tvName = findViewById(R.id.tvName).toString();
+        String tvCategory = findViewById(R.id.tvCategory).toString();
+        String tvDiscount = findViewById(R.id.tvDiscount).toString();
+
+        card = new Card();
+        card.setName(tvName);
+        card.setCategory(tvCategory);
+        card.setDiscount(tvDiscount);
+
+        Intent intent = new Intent(this, CardListActivity.class);
+        intent.putExtra(Card.class.getSimpleName(),card);
+        setResult(Activity.RESULT_OK, intent);
         finish();
     }
 }

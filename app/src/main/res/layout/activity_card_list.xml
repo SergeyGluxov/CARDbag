@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EDEDED"
-    tools:context=".CardList">
+    tools:context=".CardListActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -41,10 +41,6 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
@@ -54,11 +50,13 @@
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="17dp"
             android:layout_marginEnd="17dp"
+            android:onClick="btAddCard"
             android:clickable="true"
             android:backgroundTint="#009788"
             android:src="@drawable/shapes"
-            app:fabSize="normal"/>
-    </RelativeLayout>
+            app:fabSize="normal"
+            />
+
 
 
     <RelativeLayout
@@ -107,8 +105,5 @@
             android:layout_marginRight="26dp"
             android:text="процент"
             android:textColor="#009788"/>
-
     </RelativeLayout>
-
-
 </RelativeLayout>
