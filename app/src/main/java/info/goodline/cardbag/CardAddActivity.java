@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,16 +20,26 @@ public class CardAddActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Card card;
 
+    private EditText etName;
+    private EditText etCategory;
+    private EditText etDiscount;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_card);
+
+        card = new Card();
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Добавить карту");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        etName = findViewById(R.id.name);
+        etCategory = findViewById(R.id.category);
+        etDiscount = findViewById(R.id.discount);
 
     }
 
@@ -45,18 +56,13 @@ public class CardAddActivity extends AppCompatActivity {
 
     public void btSaveCard(View view) {
 
-        String tvName = findViewById(R.id.tvName).toString();
-        String tvCategory = findViewById(R.id.tvCategory).toString();
-        String tvDiscount = findViewById(R.id.tvDiscount).toString();
-
-        card = new Card();
-        card.setName(tvName);
-        card.setCategory(tvCategory);
-        card.setDiscount(tvDiscount);
+        card.setName(etName.getText().toString());
+        card.setCategory(etCategory.getText().toString());
+        card.setDiscount(etDiscount.getText().toString());
 
         Intent intent = new Intent(this, CardListActivity.class);
-        intent.putExtra(Card.class.getSimpleName(),card);
-        setResult(Activity.RESULT_OK, intent);
+        intent.putExtra(Card.class.getSimpleName(), card);
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -40,9 +42,19 @@ public class CardListActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvCategory = findViewById(R.id.tvCategory);
         tvDiscount = findViewById(R.id.tvDiscount);
-
-        rlNoCard.setVisibility(View.VISIBLE);
         rlCard.setVisibility(View.GONE);
+    }
+
+    public void btAddCard(View view) {
+        Intent intent = new Intent(this, CardAddActivity.class);
+        startActivityForResult(intent, COUNT_CARD);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
     }
 
     @Override
@@ -60,31 +72,30 @@ public class CardListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-             if (requestCode == 1)
-             {
-
-                if (resultCode == Activity.RESULT_OK) {
-
-                    rlCard.setVisibility(View.GONE);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case COUNT_CARD:
+                    rlCard.setVisibility(View.VISIBLE);
                     rlNoCard.setVisibility(View.GONE);
 
-                    Bundle arguments = getIntent().getExtras();
-                    Card card = (Card)arguments.getSerializable(Card.class.getSimpleName());
+                    Bundle arg = data.getExtras();
+                    if (arg == null) {
+                        return;
+                    }
 
-                   String name =  data.getStringExtra(card.getName());
-                   String categor = data.getStringExtra(card.getCategory());
-                   String discount = data.getStringExtra(card.getDiscount());
+                    Card card = (Card) arg.getSerializable(Card.class.getSimpleName());
+                    if (card == null) {
+                        return;
+                    }
 
+                    String name = card.getName();
+                    String category = card.getCategory();
+                    String discount = card.getDiscount();
                     tvName.setText(name);
-                    tvCategory.setText(categor);
+                    tvCategory.setText(category);
                     tvDiscount.setText("Скидка" + discount + "%");
-                }
+
+            }
         }
     }
-
-    public void btAddCard(View view) {
-        Intent intent = new Intent(this, CardAddActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
 }
