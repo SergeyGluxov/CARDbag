@@ -10,5 +10,8 @@ public class DataBaseHelper {
             new Category(1, "Одежда и обувь"),
             new Category(2, "Магазины")
     );
+    public static List<Category> getCategories() {
+        return category;
+    }
 }
 

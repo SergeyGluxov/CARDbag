@@ -8,7 +8,7 @@ import android.view.MenuInflater;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-public class category_list extends AppCompatActivity {
+public class Activity_category_list extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,12 +21,11 @@ public class category_list extends AppCompatActivity {
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         RecyclerView recyclerView = findViewById(R.id.rvCategory);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // создаем адаптер
-        CategoryAdapter adapter = new CategoryAdapter(this, DataBaseHelper.category);
+        CategoryAdapter adapter = new CategoryAdapter(this, DataBaseHelper.getCategories());
         // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
     }

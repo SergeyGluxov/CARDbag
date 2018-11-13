@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".category_list">
+    tools:context=".Activity_category_list">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/MyToolbar" />
+        android:background="#FAFAFA"/>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvCategory"

@@ -8,11 +8,9 @@ import android.widget.TextView;
 public class CategoryVH extends RecyclerView.ViewHolder
 {
     public TextView tvName;
-    public TextView tvId;
     public CategoryVH(@NonNull View itemView)
     {
         super(itemView);
         tvName = itemView.findViewById(R.id.tvName);
-        tvId = itemView.findViewById(R.id.tvId);
     }
 }
