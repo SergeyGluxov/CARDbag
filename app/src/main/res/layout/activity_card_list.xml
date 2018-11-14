@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EDEDED"
+    tools:context=".CardListActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="#FAFAFA" />
+
+    <RelativeLayout
+        android:id="@+id/rl_no_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/tvDescription"
+            android:layout_centerHorizontal="true"
+            android:text="Нет карт"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="24dp"
+            android:gravity="center"
+            android:padding="17dp"
+            android:text="Нажмите 'плюс', чтобы добавить первую карту"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="17dp"
+            android:layout_marginEnd="17dp"
+            android:onClick="btAddCard"
+            android:clickable="true"
+            android:backgroundTint="#009788"
+            android:src="@drawable/shapes"
+            app:fabSize="normal"
+            />
+
+
+
+    <RelativeLayout
+        android:id="@+id/rl_card"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Название"
+            android:textSize="11pt"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="17dp"
+            android:textColor="#333333"/>
+
+        <ImageView
+            android:id="@+id/img_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/tvName"
+            android:src="@drawable/card"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/tvCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_card"
+            android:text="категория"
+            android:layout_marginLeft="17dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#9B9B9B"/>
+
+        <TextView
+            android:id="@+id/tvDiscount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_card"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="26dp"
+            android:text="процент"
+            android:textColor="#009788"/>
+    </RelativeLayout>
+</RelativeLayout>
