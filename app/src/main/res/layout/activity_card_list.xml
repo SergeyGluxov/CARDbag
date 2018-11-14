@@ -42,6 +42,13 @@
     </RelativeLayout>
 
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvCard"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="?attr/actionBarSize">
+    </android.support.v7.widget.RecyclerView>
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/floatingActionButton"
             android:layout_width="wrap_content"
@@ -55,54 +62,4 @@
             android:clickable="true"
             android:backgroundTint="#009788"
             />
-
-
-
-    <RelativeLayout
-        android:id="@+id/rl_card"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/toolbar">
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Название"
-            android:textSize="11pt"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="17dp"
-            android:textColor="#333333"/>
-
-        <ImageView
-            android:id="@+id/img_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/tvName"
-            android:src="@drawable/card"
-            android:scaleType="centerCrop"/>
-
-        <TextView
-            android:id="@+id/tvCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_card"
-            android:text="категория"
-            android:layout_marginLeft="17dp"
-            android:layout_marginTop="20dp"
-            android:textColor="#9B9B9B"/>
-
-        <TextView
-            android:id="@+id/tvDiscount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/img_card"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="26dp"
-            android:text="процент"
-            android:textColor="#009788"/>
-    </RelativeLayout>
 </RelativeLayout>

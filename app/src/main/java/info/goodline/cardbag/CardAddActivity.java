@@ -42,7 +42,6 @@ public class CardAddActivity extends AppCompatActivity {
         etName = findViewById(R.id.name);
         etCategory = findViewById(R.id.category);
         etDiscount = findViewById(R.id.discount);
-
     }
 
     @Override
@@ -73,23 +72,26 @@ public class CardAddActivity extends AppCompatActivity {
         startActivityForResult(intent,ADD_CATEGORY);
     }
 
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (data == null) {
-            return;
-        }
-        else try{
-            Bundle arguments = data.getExtras();
-            Category category = (Category) arguments.getParcelable(Category.class.getSimpleName());
-            if (arguments == null||category==null||resultCode!=RESULT_OK) {
-                return;
+
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case ADD_CATEGORY:
+
+                    Bundle arg = data.getExtras();
+                    if (arg == null) {
+                        return;
+                    }
+
+                    Category category = (Category) arg.getSerializable(Category.class.getSimpleName());
+                    if (category == null) {
+                        return;
+                    }
+                    String nameCateg = category.getName();
+                    etCategory.setText(nameCateg);
             }
-            else {
-                etCategory.setText(category.getName());
-            }
-        }
-        catch (Exception ex){
-            Toast.makeText(this, ex.getMessage(),Toast.LENGTH_LONG);
         }
     }
 }

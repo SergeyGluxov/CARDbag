@@ -19,16 +19,14 @@ public class Activity_category_list extends AppCompatActivity implements Categor
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Inbox");
+        getSupportActionBar().setTitle("Категории");
 
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         RecyclerView recyclerView = findViewById(R.id.rvCategory);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // создаем адаптер
         CategoryAdapter adapter = new CategoryAdapter(this, DataBaseHelper.getCategories(), this);
-        // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
     }
 

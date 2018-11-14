@@ -1,28 +1,33 @@
 package info.goodline.cardbag;
 
-import android.app.Activity;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CardListActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private RelativeLayout rlCard;
+    private RecyclerView rlCard;
     private  RelativeLayout rlNoCard;
 
-    private TextView tvName;
-    private TextView tvCategory;
-    private TextView tvDiscount;
+    private RecyclerView recyclerView;
+    private List<Card> cards;
+
     private static final int COUNT_CARD = 1;
 
     @Override
@@ -36,13 +41,14 @@ public class CardListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        rlCard = findViewById(R.id.rl_card);
+        rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
-        tvName = findViewById(R.id.tvName);
-        tvCategory = findViewById(R.id.tvCategory);
-        tvDiscount = findViewById(R.id.tvDiscount);
         rlCard.setVisibility(View.GONE);
+
+        recyclerView = findViewById(R.id.rvCard);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        cards = new ArrayList<>();
     }
 
     public void btAddCard(View view) {
@@ -50,14 +56,14 @@ public class CardListActivity extends AppCompatActivity {
         startActivityForResult(intent, COUNT_CARD);
     }
 
-    /*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+        inflater.inflate(R.menu.profile_menu, menu);
         return true;
     }
-    */
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -90,13 +96,9 @@ public class CardListActivity extends AppCompatActivity {
                         return;
                     }
 
-                    String name = card.getName();
-                    String category = card.getCategory();
-                    String discount = card.getDiscount();
-                    tvName.setText(name);
-                    tvCategory.setText(category);
-                    tvDiscount.setText("Скидка" + discount + "%");
-
+                    CardAdapter adapter = new CardAdapter(this, cards);
+                    recyclerView.setAdapter(adapter);
+                    adapter.insertItem(card);
             }
         }
     }
