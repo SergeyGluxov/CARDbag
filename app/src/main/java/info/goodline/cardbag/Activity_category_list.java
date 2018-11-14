@@ -1,5 +1,6 @@
 package info.goodline.cardbag;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,8 +8,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
-public class Activity_category_list extends AppCompatActivity {
+public class Activity_category_list extends AppCompatActivity implements CategoryAdapter.onItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +27,7 @@ public class Activity_category_list extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // создаем адаптер
-        CategoryAdapter adapter = new CategoryAdapter(this, DataBaseHelper.getCategories());
+        CategoryAdapter adapter = new CategoryAdapter(this, DataBaseHelper.getCategories(), this);
         // устанавливаем для списка адаптер
         recyclerView.setAdapter(adapter);
     }
@@ -35,5 +37,14 @@ public class Activity_category_list extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_menu, menu);
         return true;
+    }
+
+
+    @Override
+    public void onItemClick (Category item) {
+        Intent intent = new Intent(this,CardAddActivity.class);
+        intent.putExtra(Category.class.getSimpleName(), item);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

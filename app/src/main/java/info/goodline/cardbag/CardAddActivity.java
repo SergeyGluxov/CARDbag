@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class CardAddActivity extends AppCompatActivity {
@@ -24,6 +25,7 @@ public class CardAddActivity extends AppCompatActivity {
     private EditText etCategory;
     private EditText etDiscount;
 
+    private static final int ADD_CATEGORY = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,5 +66,30 @@ public class CardAddActivity extends AppCompatActivity {
         intent.putExtra(Card.class.getSimpleName(), card);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    public void etCategoryClick(View view) {
+        Intent intent = new Intent(this, Activity_category_list.class);
+        startActivityForResult(intent,ADD_CATEGORY);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) {
+            return;
+        }
+        else try{
+            Bundle arguments = data.getExtras();
+            Category category = (Category) arguments.getParcelable(Category.class.getSimpleName());
+            if (arguments == null||category==null||resultCode!=RESULT_OK) {
+                return;
+            }
+            else {
+                etCategory.setText(category.getName());
+            }
+        }
+        catch (Exception ex){
+            Toast.makeText(this, ex.getMessage(),Toast.LENGTH_LONG);
+        }
     }
 }

@@ -15,10 +15,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryVH>
 
     private List<Category> category;
     private LayoutInflater inflater;
-    public  CategoryAdapter(Context context, List<Category> category)
+    private onItemClickListener clickListener;
+    public  CategoryAdapter(Context context, List<Category> category,  onItemClickListener clickListener)
     {
         this.category = category;
         this.inflater = LayoutInflater.from(context);
+        this.clickListener = clickListener;
     }
     @NonNull
     @Override
@@ -31,10 +33,22 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryVH>
     public void onBindViewHolder(@NonNull CategoryVH categoryVH, int position) {
         final Category categoryItem = category.get(position);
         categoryVH.tvName.setText(categoryItem.getName());
+        categoryVH.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onItemClick(categoryItem);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return category.size();
     }
+
+
+    public interface onItemClickListener {
+        void onItemClick(Category item);
+    }
+
 }

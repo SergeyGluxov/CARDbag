@@ -38,7 +38,10 @@
             android:hint="Категория"
             android:layout_marginRight="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_marginBottom="30dp"
+            android:drawableRight="@drawable/ic_keyboard_arrow_right"
+            android:onClick="etCategoryClick"
+            />
 
         <EditText
             android:id="@+id/discount"
