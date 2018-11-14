@@ -1,19 +1,13 @@
 package info.goodline.cardbag;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class CardAddActivity extends AppCompatActivity {
@@ -68,7 +62,7 @@ public class CardAddActivity extends AppCompatActivity {
     }
 
     public void etCategoryClick(View view) {
-        Intent intent = new Intent(this, Activity_category_list.class);
+        Intent intent = new Intent(this, CardCategoryList.class);
         startActivityForResult(intent,ADD_CATEGORY);
     }
 

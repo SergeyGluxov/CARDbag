@@ -10,7 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-public class Activity_category_list extends AppCompatActivity implements CategoryAdapter.onItemClickListener {
+public class CardCategoryList extends AppCompatActivity implements CategoryAdapter.onItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
