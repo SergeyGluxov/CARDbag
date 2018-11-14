@@ -53,8 +53,6 @@
             android:onClick="btAddCard"
             android:clickable="true"
             android:backgroundTint="#009788"
-            android:src="@drawable/shapes"
-            app:fabSize="normal"
             />
 
 

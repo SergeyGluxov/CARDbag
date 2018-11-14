@@ -50,12 +50,14 @@ public class CardListActivity extends AppCompatActivity {
         startActivityForResult(intent, COUNT_CARD);
     }
 
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
     }
+    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
