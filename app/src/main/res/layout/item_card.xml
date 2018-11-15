@@ -22,19 +22,18 @@
             android:textColor="#333333"
             android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/ivCard"
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvPhoto"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_below="@id/tvName"
-            android:src="@drawable/card" />
+            android:layout_marginTop="?attr/actionBarSize">
+        </android.support.v7.widget.RecyclerView>
 
         <TextView
             android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivCard"
+            android:layout_below="@id/rvPhoto"
             android:layout_marginTop="11dp"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="14dp"
@@ -45,7 +44,7 @@
             android:id="@+id/tvDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ivCard"
+            android:layout_below="@id/rvPhoto"
             android:layout_alignParentRight="true"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="29dp"

@@ -41,14 +41,20 @@ public class CardListActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        cards = new ArrayList<>();
+
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
         rlCard.setVisibility(View.GONE);
 
+        List<Photo> phList = DataBaseHelper.getPhoto();
+        PhotoAdapter photoAdapter = new PhotoAdapter(this, phList);
+
         recyclerView = findViewById(R.id.rvCard);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        cards = new ArrayList<>();
+        recyclerView.setAdapter(photoAdapter);
+
     }
 
     public void btAddCard(View view) {

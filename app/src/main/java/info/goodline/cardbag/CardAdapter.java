@@ -13,8 +13,10 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
 
     private LayoutInflater inflater;
     private List<Card> cards;
+    Context context;
 
     public CardAdapter(Context context, List<Card> cards) {
+        this.context = context;
         this.cards = cards;
         this.inflater = LayoutInflater.from(context);
     }
@@ -22,7 +24,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
     @NonNull
     @Override
     public CardVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = inflater.inflate(R.layout.item_card, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_card, viewGroup, false);
         return new CardVH(view);
     }
 

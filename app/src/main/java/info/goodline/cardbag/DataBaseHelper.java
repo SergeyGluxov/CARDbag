@@ -13,5 +13,13 @@ public class DataBaseHelper {
     public static List<Category> getCategories() {
         return category;
     }
+
+    public static  List<Photo> photo = Arrays.asList(
+            new Photo(R.drawable.card),
+            new Photo(R.drawable.card)
+    );
+    public static List<Photo> getPhoto() {
+        return photo;
+    }
 }
 
