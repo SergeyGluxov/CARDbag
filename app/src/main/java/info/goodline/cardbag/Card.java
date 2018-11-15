@@ -3,12 +3,19 @@ package info.goodline.cardbag;
 import android.widget.EditText;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Card implements Serializable {
     private String name;
     private String category;
     private String discount;
 
+    public List<Photo> getPhoto() {
+        return photo;
+    }
+
+    public List<Photo> photo;
+    
     public String getName() {
         return name;
     }
@@ -32,4 +39,6 @@ public class Card implements Serializable {
     public void setDiscount(String discount) {
         this.discount = discount;
     }
+
+
 }

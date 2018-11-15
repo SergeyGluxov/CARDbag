@@ -2,6 +2,7 @@ package info.goodline.cardbag;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
     @Override
     public void onBindViewHolder(@NonNull CardVH cardVH, int position) {
         final Card cardItem = cards.get(position);
+
+        PhotoAdapter phAdapter = new PhotoAdapter(context, cardItem.getPhoto());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
+
+        cardVH.rvPhoto.setLayoutManager(layoutManager);
+        cardVH.rvPhoto.setAdapter(phAdapter);
         cardVH.tvCardName.setText(cardItem.getName());
         cardVH.tvCardCategory.setText(cardItem.getCategory());
         cardVH.tvCardDiscount.setText("Скидка " + cardItem.getDiscount() + "%");
