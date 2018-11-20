@@ -7,34 +7,37 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoVH>{
 
-    private List<Photo> photoList;
+    private  LayoutInflater inflater;
+    private List<Photo> photosList;
     Context context;
 
-    public PhotoAdapter(Context context, List<Photo> photo)
+    public PhotoAdapter(Context context, List<Photo> photos)
     {
+        this.inflater = LayoutInflater.from(context);
         this.context = context;
-        this.photoList = photo;
+        this.photosList = photos;
     }
 
     @NonNull
     @Override
     public PhotoVH onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_photo_card, viewGroup, false);
+        View view = inflater.inflate(R.layout.item_photo_card, viewGroup, false);
         return new PhotoVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull PhotoVH photoVH, int position) {
-        final Photo photo = photoList.get(position);
-        photoVH.ivPhoto.setImageResource(photo.getIconSources());
+        final Photo photo = photosList.get(position);
+        photoVH.ivPhoto.setImageDrawable(context.getResources().getDrawable(photo.getIconSources()));
     }
 
     @Override
     public int getItemCount() {
-        return photoList.size();
+        return photosList.size();
     }
 }

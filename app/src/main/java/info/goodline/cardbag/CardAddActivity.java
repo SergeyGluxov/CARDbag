@@ -9,6 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class CardAddActivity extends AppCompatActivity {
 
@@ -54,6 +57,12 @@ public class CardAddActivity extends AppCompatActivity {
         card.setName(etName.getText().toString());
         card.setCategory(etCategory.getText().toString());
         card.setDiscount(etDiscount.getText().toString());
+
+        ArrayList<Photo> photos = new ArrayList<>();
+        photos.add(new Photo(R.drawable.card));
+        photos.add(new Photo(R.drawable.card));
+        card.setPhotos(photos);
+
 
         Intent intent = new Intent(this, CardListActivity.class);
         intent.putExtra(Card.class.getSimpleName(), card);

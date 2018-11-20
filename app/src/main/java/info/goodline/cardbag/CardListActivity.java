@@ -24,9 +24,8 @@ public class CardListActivity extends AppCompatActivity {
 
     private RecyclerView rlCard;
     private  RelativeLayout rlNoCard;
-
-    private RecyclerView recyclerView;
     private List<Card> cards;
+    CardAdapter adapter;
 
     private static final int COUNT_CARD = 1;
 
@@ -48,12 +47,8 @@ public class CardListActivity extends AppCompatActivity {
 
         rlCard.setVisibility(View.GONE);
 
-        List<Photo> phList = DataBaseHelper.getPhoto();
-        PhotoAdapter photoAdapter = new PhotoAdapter(this, phList);
-
-        recyclerView = findViewById(R.id.rvCard);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(photoAdapter);
+        rlCard.setLayoutManager(new LinearLayoutManager(this));
+        rlCard.setAdapter(adapter);
 
     }
 
@@ -103,7 +98,7 @@ public class CardListActivity extends AppCompatActivity {
                     }
 
                     CardAdapter adapter = new CardAdapter(this, cards);
-                    recyclerView.setAdapter(adapter);
+                    rlCard.setAdapter(adapter);
                     adapter.insertItem(card);
             }
         }

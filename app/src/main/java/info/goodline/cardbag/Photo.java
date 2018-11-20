@@ -2,7 +2,9 @@ package info.goodline.cardbag;
 
 import android.widget.ImageView;
 
-public class Photo {
+import java.io.Serializable;
+
+public class Photo implements Serializable {
     private int iconUrl;
 
     public Photo(int iconSources) {
@@ -11,9 +13,5 @@ public class Photo {
 
     public int getIconSources() {
         return iconUrl;
-    }
-
-    public void setIconSources(int iconUrl) {
-        this.iconUrl = iconUrl;
     }
 }

@@ -33,7 +33,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
     public void onBindViewHolder(@NonNull CardVH cardVH, int position) {
         final Card cardItem = cards.get(position);
 
-        PhotoAdapter phAdapter = new PhotoAdapter(context, cardItem.getPhoto());
+        PhotoAdapter phAdapter = new PhotoAdapter(context, cardItem.getPhotos());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
 
         cardVH.rvPhoto.setLayoutManager(layoutManager);
@@ -45,7 +45,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
 
     public void insertItem(Card item) {
         cards.add(item);
-        notifyDataSetChanged();
+        notifyItemInserted(cards.size() - 1);
     }
 
     @Override
