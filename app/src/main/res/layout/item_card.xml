@@ -8,34 +8,33 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#EDEDED">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="9dp"
-            android:layout_marginStart="16dp"
             android:text="Название"
-            android:textStyle="bold"
+            android:layout_marginTop="44dp"
+            android:layout_marginLeft="16dp"
             android:textColor="#333333"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="?attr/actionBarSize">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_marginTop="?attr/actionBarSize"/>
 
         <TextView
             android:id="@+id/tvCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/rvPhoto"
-            android:layout_marginTop="11dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="11dp"
             android:layout_marginBottom="14dp"
             android:text="test"
             android:textColor="#9B9B9B" />
@@ -51,6 +50,7 @@
             android:layout_marginBottom="14dp"
             android:text="test"
             android:textColor="#009788" />
+
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>

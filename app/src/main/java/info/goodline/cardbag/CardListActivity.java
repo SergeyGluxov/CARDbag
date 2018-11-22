@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +26,8 @@ public class CardListActivity extends AppCompatActivity {
     private RecyclerView rlCard;
     private  RelativeLayout rlNoCard;
     private List<Card> cards;
-    CardAdapter adapter;
+    private CardAdapter adapter;
+    private LinearLayoutManager linearLayoutManager;
 
     private static final int COUNT_CARD = 1;
 
@@ -37,18 +39,20 @@ public class CardListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Мои карты");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         cards = new ArrayList<>();
-
+        adapter = new CardAdapter(this, cards);
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
         rlCard.setVisibility(View.GONE);
 
-        rlCard.setLayoutManager(new LinearLayoutManager(this));
         rlCard.setAdapter(adapter);
+
+        linearLayoutManager = new LinearLayoutManager(this);
+        rlCard.setLayoutManager(linearLayoutManager);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
+        rlCard.addItemDecoration(dividerItemDecoration);
 
     }
 
@@ -65,17 +69,6 @@ public class CardListActivity extends AppCompatActivity {
         return true;
     }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -97,8 +90,6 @@ public class CardListActivity extends AppCompatActivity {
                         return;
                     }
 
-                    CardAdapter adapter = new CardAdapter(this, cards);
-                    rlCard.setAdapter(adapter);
                     adapter.insertItem(card);
             }
         }
