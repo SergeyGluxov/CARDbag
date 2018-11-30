@@ -10,7 +10,9 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
+
+import io.realm.Realm;
 
 
 public class CardAddActivity extends AppCompatActivity {
@@ -54,18 +56,19 @@ public class CardAddActivity extends AppCompatActivity {
 
     public void btSaveCard(View view) {
 
-        card.setName(etName.getText().toString());
-        card.setCategory(etCategory.getText().toString());
-        card.setDiscount(etDiscount.getText().toString());
-
         ArrayList<Photo> photos = new ArrayList<>();
         photos.add(new Photo(R.drawable.card));
         photos.add(new Photo(R.drawable.card));
         card.setPhotos(photos);
 
+        Random random = new Random();
+        int id = random.nextInt(2000);
+        card.setId(id);
 
         Intent intent = new Intent(this, CardListActivity.class);
         intent.putExtra(Card.class.getSimpleName(), card);
+
+        addCard(card);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -96,5 +99,31 @@ public class CardAddActivity extends AppCompatActivity {
                     etCategory.setText(nameCateg);
             }
         }
+    }
+
+    private void addCard(Card card)
+    {
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(map2CardRealm(card));
+            }
+        });
+    }
+    private  CardRealm map2CardRealm(Card card)
+    {
+        CardRealm cardRealm = new CardRealm();
+        cardRealm.setId(card.getId());
+        cardRealm.setName(card.getName());
+        cardRealm.setDiscount(card.getDiscount());
+        cardRealm.setCategory(categoryMap2Realm(card.getCategory()));
+        return  cardRealm;
+    }
+    private CategoryRealm categoryMap2Realm(Category category) {
+        CategoryRealm categoryRealm = new CategoryRealm();
+        categoryRealm.setId(category.getId());
+        categoryRealm.setName(category.getName());
+        return categoryRealm;
     }
 }
