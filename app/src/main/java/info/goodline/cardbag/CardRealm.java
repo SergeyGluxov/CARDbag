@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class CardRealm extends RealmObject {
     @PrimaryKey
-    private int id;
+    public int id;
     private String name;
     private Category category;
     private String discount;

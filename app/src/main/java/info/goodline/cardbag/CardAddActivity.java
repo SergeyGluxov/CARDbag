@@ -59,22 +59,23 @@ public class CardAddActivity extends AppCompatActivity {
         ArrayList<Photo> photos = new ArrayList<>();
         photos.add(new Photo(R.drawable.card));
         photos.add(new Photo(R.drawable.card));
-        card.setPhotos(photos);
 
         Random random = new Random();
         int id = random.nextInt(2000);
+        Category category = new Category(id, etCategory.getText().toString());
         card.setId(id);
+        card.setPhotos(photos);
+        card.setCategory(category);
 
         Intent intent = new Intent(this, CardListActivity.class);
         intent.putExtra(Card.class.getSimpleName(), card);
-
         addCard(card);
         setResult(RESULT_OK, intent);
         finish();
     }
 
     public void etCategoryClick(View view) {
-        Intent intent = new Intent(this, CardCategoryList.class);
+        Intent intent = new Intent(this, CategoryListActivity.class);
         startActivityForResult(intent,ADD_CATEGORY);
     }
 

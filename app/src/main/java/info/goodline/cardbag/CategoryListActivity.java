@@ -1,5 +1,6 @@
 package info.goodline.cardbag;
 
+import android.accounts.NetworkErrorException;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
-public class CardCategoryList extends AppCompatActivity implements CategoryAdapter.onItemClickListener {
+public class CategoryListActivity extends AppCompatActivity implements CategoryAdapter.onItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,24 +44,31 @@ public class CardCategoryList extends AppCompatActivity implements CategoryAdapt
 
         categoryLocal = getCategoriesFromLocal();
 
-        if(categoryLocal == null || categoryLocal.isEmpty())
-        {
-            categoriesRest = getCategoriesFromRemote();
-            addCategories(categoriesRest);
-        }
+        if (categoryLocal == null || categoryLocal.isEmpty()) {
+            try {
+                categoriesRest = getCategoriesFromRemote();
+            } catch (NetworkErrorException e) {
+                e.printStackTrace();
+            }
 
+            if (categoriesRest == null) {
+                Toast.makeText(this, "Ошибка серевера", Toast.LENGTH_LONG).show();
+                return;
+            }
+
+            if (categoriesRest != null) {
+                addCategories(categoriesRest);
+            }
+        }
+        categoryLocal = getCategoriesFromLocal();
         categories = map2Data(categoryLocal);
 
         CategoryAdapter adapter = new CategoryAdapter(this, categories, this);
         recyclerView.setAdapter(adapter);
+
         DividerItemDecoration dividerItemDecoration=new DividerItemDecoration(this,linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
     }
-
-    private RealmResults<CategoryRealm> getCategoriesFromLocal() {
-        return Realm.getDefaultInstance().where(CategoryRealm.class).findAll();
-    }
-
 
     private void addCategories(List<Category> list) {
         final List<CategoryRealm> realmList = map2RealmList(list);
@@ -73,6 +82,10 @@ public class CardCategoryList extends AppCompatActivity implements CategoryAdapt
         realm.close();
     }
 
+    private RealmResults<CategoryRealm> getCategoriesFromLocal() {
+        return Realm.getDefaultInstance().where(CategoryRealm.class).findAll();
+    }
+
     private List<CategoryRealm> map2RealmList(List<Category> categories)
     {
         List<CategoryRealm> realmList = new ArrayList<>();
@@ -81,6 +94,7 @@ public class CardCategoryList extends AppCompatActivity implements CategoryAdapt
             CategoryRealm categoryRealm = new CategoryRealm();
             categoryRealm.setId(category.getId());
             categoryRealm.setName(category.getName());
+            realmList.add(categoryRealm);
         }
         return realmList;
     }
@@ -109,9 +123,10 @@ public class CardCategoryList extends AppCompatActivity implements CategoryAdapt
         setResult(RESULT_OK, intent);
         finish();
     }
-    private  List<Category> getCategoriesFromRemote()
+    private  List<Category> getCategoriesFromRemote() throws NetworkErrorException
     {
-        return  DataBaseHelper.getCategories();
+        throw  new NetworkErrorException();
+       // return  DataBaseHelper.getCategories();
     }
     private  List<Category> map2Data(List<CategoryRealm> realmList)
     {
