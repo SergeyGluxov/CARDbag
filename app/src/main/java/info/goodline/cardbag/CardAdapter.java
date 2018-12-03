@@ -8,17 +8,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardVH> {
 
     private LayoutInflater inflater;
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
     Context context;
 
-    public CardAdapter(Context context, List<Card> cards) {
+    public CardAdapter(Context context) {
         this.context = context;
-        this.cards = cards;
         this.inflater = LayoutInflater.from(context);
     }
 
@@ -39,7 +39,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
         cardVH.rvPhoto.setLayoutManager(layoutManager);
         cardVH.rvPhoto.setAdapter(phAdapter);
         cardVH.tvCardName.setText(cardItem.getName());
-        cardVH.tvCardCategory.setText(cardItem.getCategory());
+        cardVH.tvCardCategory.setText(cardItem.getCategory().getName());
         cardVH.tvCardDiscount.setText("Скидка " + cardItem.getDiscount() + "%");
     }
 

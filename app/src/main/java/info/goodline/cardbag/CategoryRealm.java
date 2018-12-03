@@ -7,7 +7,7 @@ public class CategoryRealm extends RealmObject {
 
     @PrimaryKey
     public int id;
-    private String name;
+    public String name;
 
     public int getId() {
         return id;

@@ -9,10 +9,10 @@ import io.realm.annotations.PrimaryKey;
 public class CardRealm extends RealmObject {
     @PrimaryKey
     public int id;
-    private String name;
-    private Category category;
-    private String discount;
-    private RealmList<Integer> photo;
+    public String name;
+    public CategoryRealm category;
+    public String discount;
+    public RealmList<Integer> photo;
 
     public String getName() {
         return name;
@@ -30,11 +30,11 @@ public class CardRealm extends RealmObject {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public CategoryRealm getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(CategoryRealm category) {
         this.category = category;
     }
 
@@ -54,6 +54,4 @@ public class CardRealm extends RealmObject {
         this.photo = photo;
     }
 
-    public void setCategory(CategoryRealm categoryRealm) {
-    }
 }

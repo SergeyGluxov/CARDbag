@@ -41,7 +41,7 @@ public class CardListActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Мои карты");
 
         cards = new ArrayList<>();
-        adapter = new CardAdapter(this, cards);
+        adapter = new CardAdapter(this);
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 

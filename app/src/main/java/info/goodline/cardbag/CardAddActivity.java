@@ -102,7 +102,7 @@ public class CardAddActivity extends AppCompatActivity {
         }
     }
 
-    private void addCard(Card card)
+    public void addCard(Card card)
     {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
@@ -112,7 +112,7 @@ public class CardAddActivity extends AppCompatActivity {
             }
         });
     }
-    private  CardRealm map2CardRealm(Card card)
+    public  CardRealm map2CardRealm(Card card)
     {
         CardRealm cardRealm = new CardRealm();
         cardRealm.setId(card.getId());
@@ -121,7 +121,7 @@ public class CardAddActivity extends AppCompatActivity {
         cardRealm.setCategory(categoryMap2Realm(card.getCategory()));
         return  cardRealm;
     }
-    private CategoryRealm categoryMap2Realm(Category category) {
+    public CategoryRealm categoryMap2Realm(Category category) {
         CategoryRealm categoryRealm = new CategoryRealm();
         categoryRealm.setId(category.getId());
         categoryRealm.setName(category.getName());
