@@ -45,9 +45,11 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryA
         categoryLocal = getCategoriesFromLocal();
 
         if (categoryLocal == null || categoryLocal.isEmpty()) {
-            try {
+            try
+            {
                 categoriesRest = getCategoriesFromRemote();
-            } catch (NetworkErrorException e) {
+            }
+            catch (NetworkErrorException e) {
                 e.printStackTrace();
             }
 
@@ -86,19 +88,6 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryA
         return Realm.getDefaultInstance().where(CategoryRealm.class).findAll();
     }
 
-    private List<CategoryRealm> map2RealmList(List<Category> categories)
-    {
-        List<CategoryRealm> realmList = new ArrayList<>();
-        for(Category category: categories)
-        {
-            CategoryRealm categoryRealm = new CategoryRealm();
-            categoryRealm.setId(category.getId());
-            categoryRealm.setName(category.getName());
-            realmList.add(categoryRealm);
-        }
-        return realmList;
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -125,17 +114,33 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryA
     }
     private  List<Category> getCategoriesFromRemote() throws NetworkErrorException
     {
-        throw  new NetworkErrorException();
-       // return  DataBaseHelper.getCategories();
+        return  DataBaseHelper.getCategories();
     }
+
+
+
     private  List<Category> map2Data(List<CategoryRealm> realmList)
     {
         List<Category> categories = new ArrayList<>();
         for (CategoryRealm categoryRealm:realmList)
         {
-            Category category = new Category(categoryRealm.getId(), categoryRealm.getName());
+            Category category = new Category(
+                    categoryRealm.getId(),
+                    categoryRealm.getName());
             categories.add(category);
         }
         return categories;
+    }
+    private List<CategoryRealm> map2RealmList(List<Category> categories)
+    {
+        List<CategoryRealm> realmList = new ArrayList<>();
+        for(Category category: categories)
+        {
+            CategoryRealm categoryRealm = new CategoryRealm();
+            categoryRealm.setId(category.getId());
+            categoryRealm.setName(category.getName());
+            realmList.add(categoryRealm);
+        }
+        return realmList;
     }
 }

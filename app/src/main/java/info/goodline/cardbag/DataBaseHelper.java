@@ -15,5 +15,7 @@ public class DataBaseHelper {
     }
 
     public static List<Card> cards = Arrays.asList();
+
+
 }
 

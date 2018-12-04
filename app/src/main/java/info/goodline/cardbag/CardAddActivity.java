@@ -66,7 +66,8 @@ public class CardAddActivity extends AppCompatActivity {
         card.setId(id);
         card.setPhotos(photos);
         card.setCategory(category);
-
+        card.setDiscount(etDiscount.getText().toString());
+        card.setName(etName.getText().toString());
         Intent intent = new Intent(this, CardListActivity.class);
         intent.putExtra(Card.class.getSimpleName(), card);
         addCard(card);
