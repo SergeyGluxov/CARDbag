@@ -10,11 +10,18 @@ public class Card implements Serializable {
     private Category category;
     private String discount;
     private List<Photo> photos;
-    private List<Integer>  photo;
 
-    public List<Integer> getPhoto() {
-        return photo;
+    public Card() {
     }
+
+    public Card(int id, String name, Category category, String discount, List<Photo> photos) {
+        Id = id;
+        this.name = name;
+        this.category = category;
+        this.discount = discount;
+        this.photos = photos;
+    }
+
 
     public int getId() {
         return Id;
@@ -24,9 +31,6 @@ public class Card implements Serializable {
         Id = id;
     }
 
-    public void setPhoto(List<Integer> photo) {
-        this.photo = photo;
-    }
 
     public List<Photo> getPhotos() {
         return photos;
@@ -34,10 +38,6 @@ public class Card implements Serializable {
 
     public void setPhotos(List<Photo> photos) {
         this.photos = photos;
-    }
-
-    public Card() {
-        this.photos = new ArrayList<>();
     }
 
     public String getName() {

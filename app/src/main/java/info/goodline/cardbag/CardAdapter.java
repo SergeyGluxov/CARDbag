@@ -52,4 +52,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardVH> {
     public int getItemCount() {
         return cards.size();
     }
+
+    public void setCards(List<Card> cards) {
+        this.cards = cards;
+    }
 }

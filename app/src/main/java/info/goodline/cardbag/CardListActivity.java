@@ -19,6 +19,10 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
+
 public class CardListActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -39,18 +43,26 @@ public class CardListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Мои карты");
-
-        cards = new ArrayList<>();
         adapter = new CardAdapter(this);
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
-        rlCard.setVisibility(View.GONE);
-
         rlCard.setAdapter(adapter);
-
         linearLayoutManager = new LinearLayoutManager(this);
         rlCard.setLayoutManager(linearLayoutManager);
+        cards = map2Data(getCards());
+        if(cards == null || cards.isEmpty())
+        {
+            rlCard.setVisibility(View.GONE);
+            rlNoCard.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            rlNoCard.setVisibility(View.GONE);
+            rlCard.setVisibility(View.VISIBLE);
+            adapter.setCards(cards);
+        }
+
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
         rlCard.addItemDecoration(dividerItemDecoration);
 
@@ -61,6 +73,41 @@ public class CardListActivity extends AppCompatActivity {
         startActivityForResult(intent, COUNT_CARD);
     }
 
+    private RealmResults<CardRealm> getCards() {
+        return Realm.getDefaultInstance().where(CardRealm.class).findAll();
+    }
+
+    public List<Photo> photoMap2Realm(List<PhotoRealm> realmRealm) {
+        List<Photo> photos = new ArrayList<>();
+        for (PhotoRealm photoRealm1 : realmRealm) {
+            Photo photo = new Photo(
+                    photoRealm1.getImgID()
+            );
+            photos.add(photo);
+        }
+        return  photos;
+    }
+
+    private Category categoryMap2Data(CategoryRealm categoryRealm)
+    {
+        Category category = new Category();
+        category.setName(categoryRealm.getName());
+        category.setId(categoryRealm.getId());
+        return  category;
+    }
+    private List<Card> map2Data(List<CardRealm> realmList) {
+        List<Card> cards = new ArrayList<>();
+        for (CardRealm cardRealm : realmList) {
+            Card card = new Card(
+                    cardRealm.getId(),
+                    cardRealm.getName(),
+                    categoryMap2Data(cardRealm.getCategory()),
+                    cardRealm.getDiscount(),
+                    photoMap2Realm(cardRealm.getPhoto()));
+            cards.add(card);
+        }
+        return cards;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,7 +136,6 @@ public class CardListActivity extends AppCompatActivity {
                     if (card == null) {
                         return;
                     }
-
                     adapter.insertItem(card);
             }
         }

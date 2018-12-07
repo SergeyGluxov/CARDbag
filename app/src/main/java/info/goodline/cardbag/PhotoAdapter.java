@@ -40,4 +40,8 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoVH>{
     public int getItemCount() {
         return photosList.size();
     }
+
+    public void setPhotosList(List<Photo> photosList) {
+        this.photosList = photosList;
+    }
 }

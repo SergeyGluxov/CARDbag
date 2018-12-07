@@ -10,9 +10,11 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 
 
 public class CardAddActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class CardAddActivity extends AppCompatActivity {
     private EditText etDiscount;
 
     private static final int ADD_CATEGORY = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +65,8 @@ public class CardAddActivity extends AppCompatActivity {
 
         Random random = new Random();
         int id = random.nextInt(2000);
-        Category category = new Category(id, etCategory.getText().toString());
         card.setId(id);
         card.setPhotos(photos);
-        card.setCategory(category);
         card.setDiscount(etDiscount.getText().toString());
         card.setName(etName.getText().toString());
         Intent intent = new Intent(this, CardListActivity.class);
@@ -77,7 +78,7 @@ public class CardAddActivity extends AppCompatActivity {
 
     public void etCategoryClick(View view) {
         Intent intent = new Intent(this, CategoryListActivity.class);
-        startActivityForResult(intent,ADD_CATEGORY);
+        startActivityForResult(intent, ADD_CATEGORY);
     }
 
     @Override
@@ -99,12 +100,12 @@ public class CardAddActivity extends AppCompatActivity {
                     }
                     String nameCateg = category.getName();
                     etCategory.setText(nameCateg);
+                    card.setCategory(category);
             }
         }
     }
 
-    public void addCard(Card card)
-    {
+    public void addCard(Card card) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -113,19 +114,32 @@ public class CardAddActivity extends AppCompatActivity {
             }
         });
     }
-    public  CardRealm map2CardRealm(Card card)
-    {
+
+    public CardRealm map2CardRealm(Card card) {
         CardRealm cardRealm = new CardRealm();
         cardRealm.setId(card.getId());
         cardRealm.setName(card.getName());
         cardRealm.setDiscount(card.getDiscount());
         cardRealm.setCategory(categoryMap2Realm(card.getCategory()));
-        return  cardRealm;
+        cardRealm.setPhoto(photoMap2Realm(card.getPhotos()));
+        return cardRealm;
     }
+
     public CategoryRealm categoryMap2Realm(Category category) {
         CategoryRealm categoryRealm = new CategoryRealm();
         categoryRealm.setId(category.getId());
         categoryRealm.setName(category.getName());
         return categoryRealm;
     }
+
+    public RealmList<PhotoRealm> photoMap2Realm(List<Photo> photo) {
+        RealmList<PhotoRealm> photoRealm = new RealmList<>();
+        for (Photo photos : photo) {
+            PhotoRealm photoRealm1 = new PhotoRealm();
+            photoRealm1.setImgID(photos.getIconSources());
+            photoRealm.add(photoRealm1);
+        }
+        return  photoRealm;
+    }
 }
+

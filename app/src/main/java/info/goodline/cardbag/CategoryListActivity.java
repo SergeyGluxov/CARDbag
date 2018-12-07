@@ -117,8 +117,6 @@ public class CategoryListActivity extends AppCompatActivity implements CategoryA
         return  DataBaseHelper.getCategories();
     }
 
-
-
     private  List<Category> map2Data(List<CategoryRealm> realmList)
     {
         List<Category> categories = new ArrayList<>();
