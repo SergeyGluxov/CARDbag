@@ -1,6 +1,9 @@
 package info.goodline.cardbag;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -8,7 +11,10 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,13 +27,19 @@ public class CardAddActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private Card card;
-
+    private ImageView ivFront;
+    private ImageView ivBack;
     private EditText etName;
     private EditText etCategory;
     private EditText etDiscount;
 
-    private static final int ADD_CATEGORY = 1;
+    private static final int REQUEST_CODE_FRONT_PHOTO = 1;
+    private static final int REQUEST_CODE_BACK_PHOTO = 2;
 
+    private static final int ADD_CATEGORY = 0;
+
+    Photo photoFront;
+    Photo photoBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +56,26 @@ public class CardAddActivity extends AppCompatActivity {
         etName = findViewById(R.id.name);
         etCategory = findViewById(R.id.category);
         etDiscount = findViewById(R.id.discount);
+        findViewById(R.id.flFront).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImagFromGallery(REQUEST_CODE_FRONT_PHOTO);
+            }
+        });
+
+        findViewById(R.id.flBack).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseImagFromGallery(REQUEST_CODE_BACK_PHOTO);
+            }
+        });
+        ivFront = findViewById(R.id.ivPhotoFront);
+        ivBack = findViewById(R.id.ivPhotoBack);
+        //переменные для хранения текузего времени
+        long currentTime = System.currentTimeMillis();
+        photoFront = new Photo(currentTime+1);
+        photoBack = new Photo(currentTime+2);
+        //Тут закончил
     }
 
     @Override
@@ -85,10 +117,9 @@ public class CardAddActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case ADD_CATEGORY:
-
+        switch (requestCode) {
+            case ADD_CATEGORY:
+                if (resultCode == RESULT_OK) {
                     Bundle arg = data.getExtras();
                     if (arg == null) {
                         return;
@@ -101,9 +132,38 @@ public class CardAddActivity extends AppCompatActivity {
                     String nameCateg = category.getName();
                     etCategory.setText(nameCateg);
                     card.setCategory(category);
-            }
+                }
+                break;
+            case REQUEST_CODE_FRONT_PHOTO:
+            case REQUEST_CODE_BACK_PHOTO:
+                showImage(requestCode, data);
+                break;
         }
     }
+
+    public void showImage(int requestCode, Intent data)
+    {
+        try{
+            final Uri imageUri = data.getData();
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+            switch (requestCode)
+            {
+                case REQUEST_CODE_FRONT_PHOTO:
+                    ivFront.setImageBitmap(selectedImage);
+                    break;
+                case REQUEST_CODE_BACK_PHOTO:
+                    ivBack.setImageBitmap(selectedImage);
+                    break;
+            }
+            ivFront.setImageBitmap(selectedImage);
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
 
     public void addCard(Card card) {
         Realm realm = Realm.getDefaultInstance();
@@ -139,7 +199,21 @@ public class CardAddActivity extends AppCompatActivity {
             photoRealm1.setImgID(photos.getIconSources());
             photoRealm.add(photoRealm1);
         }
-        return  photoRealm;
+        return photoRealm;
     }
+
+    private void chooseImagFromGallery(int requestCode) {
+
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Выберите изображение");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[]{pickIntent});
+        startActivityForResult(chooserIntent, requestCode);
+    }
+
 }
 
