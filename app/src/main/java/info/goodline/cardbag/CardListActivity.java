@@ -30,8 +30,8 @@ public class CardListActivity extends AppCompatActivity {
     private RecyclerView rlCard;
     private  RelativeLayout rlNoCard;
     private List<Card> cards;
-    private CardAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
+    private CardAdapter adapter;
 
     private static final int COUNT_CARD = 1;
 
