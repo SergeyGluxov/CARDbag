@@ -23,6 +23,8 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
 
+import static io.realm.Realm.getDefaultInstance;
+
 public class CardListActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -43,70 +45,40 @@ public class CardListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Мои карты");
-        adapter = new CardAdapter(this);
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
-        rlCard.setAdapter(adapter);
-        linearLayoutManager = new LinearLayoutManager(this);
-        rlCard.setLayoutManager(linearLayoutManager);
-        cards = map2Data(getCards());
-        if(cards == null || cards.isEmpty())
-        {
-            rlCard.setVisibility(View.GONE);
-            rlNoCard.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            rlNoCard.setVisibility(View.GONE);
-            rlCard.setVisibility(View.VISIBLE);
-            adapter.setCards(cards);
-        }
+        rlCard = findViewById(R.id.rvCard);
+        rlCard.setLayoutManager(new LinearLayoutManager(this));
+        cards = new ArrayList<>();
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
-        rlCard.addItemDecoration(dividerItemDecoration);
+        adapter = new CardAdapter(this, cards);
+        rlCard.setAdapter(adapter);
+
+        loadCardList();
+
 
     }
 
+    private void loadCardList() {
+        RealmResults<CardRealm> result = getDefaultInstance().where(CardRealm.class).findAll();
+        if (result.isEmpty()) {
+            // Карточек нет
+            showCardList(false);
+            return;
+        }
+
+        cards = CardMapper.map2DataList(result);
+        adapter.setCards(cards);
+        showCardList(true);
+    }
+    public void showCardList(boolean enableList ) {
+        // Если enableList равно true, то отобразить список карточек (View.VISIBLE)
+        rlCard.setVisibility(enableList ? View.VISIBLE : View.GONE);
+    }
     public void btAddCard(View view) {
         Intent intent = new Intent(this, CardAddActivity.class);
         startActivityForResult(intent, COUNT_CARD);
-    }
-
-    private RealmResults<CardRealm> getCards() {
-        return Realm.getDefaultInstance().where(CardRealm.class).findAll();
-    }
-
-    public List<Photo> photoMap2Realm(List<PhotoRealm> realmRealm) {
-        List<Photo> photos = new ArrayList<>();
-        for (PhotoRealm photoRealm1 : realmRealm) {
-            Photo photo = new Photo(
-                    photoRealm1.getImgID()
-            );
-            photos.add(photo);
-        }
-        return  photos;
-    }
-
-    private Category categoryMap2Data(CategoryRealm categoryRealm)
-    {
-        Category category = new Category();
-        category.setName(categoryRealm.getName());
-        category.setId(categoryRealm.getId());
-        return  category;
-    }
-    private List<Card> map2Data(List<CardRealm> realmList) {
-        List<Card> cards = new ArrayList<>();
-        for (CardRealm cardRealm : realmList) {
-            Card card = new Card(
-                    cardRealm.getId(),
-                    cardRealm.getName(),
-                    categoryMap2Data(cardRealm.getCategory()),
-                    cardRealm.getDiscount(),
-                    photoMap2Realm(cardRealm.getPhoto()));
-            cards.add(card);
-        }
-        return cards;
     }
 
     @Override
@@ -121,23 +93,16 @@ public class CardListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case COUNT_CARD:
-                    rlCard.setVisibility(View.VISIBLE);
-                    rlNoCard.setVisibility(View.GONE);
+        if (resultCode != RESULT_OK || data.getExtras() == null) {
+            return;
+        }
 
-                    Bundle arg = data.getExtras();
-                    if (arg == null) {
-                        return;
-                    }
-
-                    Card card = (Card) arg.getSerializable(Card.class.getSimpleName());
-                    if (card == null) {
-                        return;
-                    }
-                    adapter.insertItem(card);
-            }
+        switch (requestCode) {
+            case (COUNT_CARD):
+                showCardList(true);
+                Bundle arg = data.getExtras();
+                Card card =(Card) arg.getSerializable(Card.class.getSimpleName());
+                adapter.insertItem(card);
         }
     }
 }

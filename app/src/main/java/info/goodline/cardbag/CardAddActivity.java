@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -150,6 +152,19 @@ public class CardAddActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) iv.getDrawable();
         return drawable.getBitmap();
     }
+    private Bitmap createBitmap(Intent data) {
+        if (data == null || data.getData() == null) {
+            return getCameraBitmap();
+        }
+        try {
+            final Uri imageUri = data.getData();
+            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+            return BitmapFactory.decodeStream(imageStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     public void btSaveCard(View view) {
 
         ArrayList<Photo> photos = new ArrayList<>();
@@ -222,28 +237,52 @@ public class CardAddActivity extends AppCompatActivity {
     }
     public void showImage(int requestCode, Intent data)
     {
-        try{
-            final Uri imageUri = data.getData();
-            final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-            final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-            switch (requestCode)
-            {
-                case REQUEST_CODE_FRONT_PHOTO:
-                    ivFront.setImageBitmap(selectedImage);
-                    break;
-                case REQUEST_CODE_BACK_PHOTO:
-                    ivBack.setImageBitmap(selectedImage);
-                    break;
-            }
+        Bitmap selectedImage = createBitmap(data);
+
+        if (selectedImage == null) {
+            return;
+        }
+        switch (requestCode) {
+        case REQUEST_CODE_FRONT_PHOTO:
             ivFront.setImageBitmap(selectedImage);
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
-        }
+            break;
+        case REQUEST_CODE_BACK_PHOTO:
+            ivBack.setImageBitmap(selectedImage);
+            break;
     }
 
+    }
 
+    private Bitmap getCameraBitmap() {
+        Bitmap bitmap = BitmapFactory.decodeFile(currentImgFile.getAbsolutePath());
+        try {
+            ExifInterface ei = new ExifInterface(currentImgFile.getAbsolutePath());
+
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED);
+
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    return rotateImage(bitmap, 90);
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    return rotateImage(bitmap, 180);
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    return rotateImage(bitmap, 270);
+                case ExifInterface.ORIENTATION_NORMAL:
+                default:
+                    return bitmap;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+    private Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
     public void addCard(Card card) {
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
