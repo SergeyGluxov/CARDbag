@@ -5,10 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Card implements Serializable {
+    private int Id;
     private String name;
-    private String category;
+    private Category category;
     private String discount;
     private List<Photo> photos;
+
+    public Card() {
+    }
+
+    public Card(int id, String name, Category category, String discount, List<Photo> photos) {
+        Id = id;
+        this.name = name;
+        this.category = category;
+        this.discount = discount;
+        this.photos = photos;
+    }
+
+
+    public int getId() {
+        return Id;
+    }
+
+    public void setId(int id) {
+        Id = id;
+    }
 
 
     public List<Photo> getPhotos() {
@@ -19,10 +40,6 @@ public class Card implements Serializable {
         this.photos = photos;
     }
 
-    public Card() {
-        this.photos = new ArrayList<>();
-    }
-
     public String getName() {
         return name;
     }
@@ -31,11 +48,11 @@ public class Card implements Serializable {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

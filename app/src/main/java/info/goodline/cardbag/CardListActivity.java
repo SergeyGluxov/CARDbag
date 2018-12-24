@@ -19,6 +19,12 @@ import android.widget.RelativeLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmList;
+import io.realm.RealmResults;
+
+import static io.realm.Realm.getDefaultInstance;
+
 public class CardListActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -26,8 +32,8 @@ public class CardListActivity extends AppCompatActivity {
     private RecyclerView rlCard;
     private  RelativeLayout rlNoCard;
     private List<Card> cards;
-    private CardAdapter adapter;
     private LinearLayoutManager linearLayoutManager;
+    private CardAdapter adapter;
 
     private static final int COUNT_CARD = 1;
 
@@ -39,28 +45,41 @@ public class CardListActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Мои карты");
-
-        cards = new ArrayList<>();
-        adapter = new CardAdapter(this, cards);
         rlCard = findViewById(R.id.rvCard);
         rlNoCard = findViewById(R.id.rl_no_card);
 
-        rlCard.setVisibility(View.GONE);
+        rlCard = findViewById(R.id.rvCard);
+        rlCard.setLayoutManager(new LinearLayoutManager(this));
+        cards = new ArrayList<>();
 
+        adapter = new CardAdapter(this, cards);
         rlCard.setAdapter(adapter);
 
-        linearLayoutManager = new LinearLayoutManager(this);
-        rlCard.setLayoutManager(linearLayoutManager);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
-        rlCard.addItemDecoration(dividerItemDecoration);
+        loadCardList();
+
 
     }
 
+    private void loadCardList() {
+        RealmResults<CardRealm> result = getDefaultInstance().where(CardRealm.class).findAll();
+        if (result.isEmpty()) {
+            // Карточек нет
+            showCardList(false);
+            return;
+        }
+
+        cards = CardMapper.map2DataList(result);
+        adapter.setCards(cards);
+        showCardList(true);
+    }
+    public void showCardList(boolean enableList ) {
+        // Если enableList равно true, то отобразить список карточек (View.VISIBLE)
+        rlCard.setVisibility(enableList ? View.VISIBLE : View.GONE);
+    }
     public void btAddCard(View view) {
         Intent intent = new Intent(this, CardAddActivity.class);
         startActivityForResult(intent, COUNT_CARD);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,24 +93,16 @@ public class CardListActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case COUNT_CARD:
-                    rlCard.setVisibility(View.VISIBLE);
-                    rlNoCard.setVisibility(View.GONE);
+        if (resultCode != RESULT_OK || data.getExtras() == null) {
+            return;
+        }
 
-                    Bundle arg = data.getExtras();
-                    if (arg == null) {
-                        return;
-                    }
-
-                    Card card = (Card) arg.getSerializable(Card.class.getSimpleName());
-                    if (card == null) {
-                        return;
-                    }
-
-                    adapter.insertItem(card);
-            }
+        switch (requestCode) {
+            case (COUNT_CARD):
+                showCardList(true);
+                Bundle arg = data.getExtras();
+                Card card =(Card) arg.getSerializable(Card.class.getSimpleName());
+                adapter.insertItem(card);
         }
     }
 }
